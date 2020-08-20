@@ -9,7 +9,7 @@ import dash_bootstrap_components as dbc # Dash componetents
 import pandas as pd
 # from Pages import analytics_page, import_data
 import spacy
-import en_core_web_sm
+import dash_daq as daq
 
 
 app = dash.Dash(
@@ -203,11 +203,13 @@ app.layout = html.Div([
                                                 className="fill_missing"),
                                         dbc.Row([
                                             dbc.Col(
-                                                dcc.Dropdown(id='dynamic-reaplce',
+                                                [dcc.Dropdown(id='dynamic-reaplce',
 
                                                              multi=True,
                                                              placeholder='Filter Column',
                                                              ),
+
+                                                 ]
 
                                             ),
                                             dbc.Col(dbc.RadioItems(id="slct_year",
@@ -247,24 +249,62 @@ app.layout = html.Div([
                                                      multi=True,
                                                      placeholder='Filter Column'),
 
-                                        dbc.Button(
-                                            "Drop All Null",
-                                            color="info",
-                                            className="mr-1",
-                                            id="dropall",
-                                            style={
-                                                'margin-top': '10px'
-                                            }
-                                        ),
-                                        dbc.Button(
-                                            "Drop Duplicate",
-                                            color="warning",
-                                            className="mr-2",
-                                            id="dropdup",
-                                            style={
-                                                'margin-top': '10px'
-                                            }
-                                        ),
+                                        dbc.Row(
+                                            [
+                                                dbc.Col(
+                                                    dbc.Button(
+                                                        "Drop All Null",
+                                                        color="info",
+                                                        className="mr-1",
+                                                        id="dropall",
+                                                        style={
+                                                            'margin-top': '10px',
+                                                            'padding': '5px'
+                                                        },
+                                                        size="sm"
+                                                    ),
+                                                    width=3
+                                                ),
+                                                dbc.Col(
+                                                    dbc.Button(
+                                                        "Drop Duplicate",
+                                                        color="warning",
+                                                        className="mr-1",
+                                                        id="dropdup",
+                                                        style={
+                                                            'margin-top': '10px',
+                                                            'padding': '5px'
+                                                        },
+                                                        size="sm"
+                                                    ),
+                                                    width=3
+                                                ),
+                                                dbc.Col(
+                                                    daq.ToggleSwitch(
+                                                        id='show_stat',
+                                                        value=False,
+                                                        label='Show/Hide Statistics',
+                                                        labelPosition='left',
+                                                        style={
+                                                            'margin-top': '10px',
+                                                            'padding': '5px'
+                                                        },
+                                                    ),
+                                                )
+                                            ]
+                                        )
+
+                                        # dbc.Button(
+                                        #     "Show Statistics",
+                                        #     color="#ebc334",
+                                        #     className="mr-2",
+                                        #     id="show_stat",
+                                        #     n_clicks=0,
+                                        #     # value="show",
+                                        #     style={
+                                        #         'margin-top': '10px'
+                                        #     }
+                                        # ),
                                     ]
                                 ),
                                 style={
@@ -317,24 +357,36 @@ app.layout = html.Div([
                                                             [
                                                                 dbc.Col(
                                                                     [
+
                                                                         html.Ul(
                                                                             id="output-column"
                                                                         ),
+
+
                                                                     ]
+
                                                                 ),
+
                                                                 dbc.Col(
                                                                     [
                                                                         html.Ul(
                                                                             id="output-column-values"
                                                                         )
                                                                     ]
-                                                                )
+
+                                                                ),
+
+                                                                dbc.Col(
+                                                                    [
+                                                                        html.Ul(
+                                                                            id="output-col"
+                                                                        ),
+                                                                    ]
+                                                                ),
+
                                                             ]
                                                         )
                                                     ],
-                                                    # style={
-                                                    #     'overflow-y': 'auto'
-                                                    # }
                                                 )
                                             ]
                                         )
@@ -343,32 +395,77 @@ app.layout = html.Div([
                                 style={'margin': '10px'},
                             )
                         ),
-                        # dbc.Col(
-                        #     dbc.Card(
-                        #         dbc.CardBody(
-                        #             [
-                        #                 html.H5("Column Data Type", className="drop_missing"),
-                        #                 html.Ul(
-                        #                     id="output-column"
-                        #                 )
-                        #              ]
-                        #         ),
-                        #         style={'margin': '10px'},
-                        #     )
-                        # )
                     ]
                 ),
-
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Div(id='output-data-describe')
+                        )
+                    ]
+                ),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Div(id='output-graph1')
+                        ),
+                        dbc.Col(
+                            html.Div(id='output-graph2')
+                        )
+                    ]
+                ),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            html.Div(id='output-graph3')
+                        )
+                    ]
+                ),
                 dbc.Row(
                     [
                         dbc.Col(
                             dbc.Card(
                                 dbc.CardBody(
                                     # html.H5("Custom CSS", className="card-title"),
-                                    html.Div(id='output-data-upload')
-                                    # dbc.Table.from_dataframe(id='output-data-upload',
-                                    #           striped=True, bordered=True, hover=True
-                                    #           )
+                                    [
+                                        dbc.Row(
+                                            dbc.Col(
+                                                [
+                                                        dbc.Button(
+                                                            "Download Data",
+                                                            color="warning",
+                                                            className="mr-1",
+                                                            id="download_data",
+                                                            style={
+                                                                'margin-top': '10px',
+                                                                'padding': '5px'
+                                                            },
+                                                            size="sm"
+                                                        ),
+                                                        dcc.RadioItems(
+                                                            id="allradio",
+                                                            options=[
+                                                                {'label': 'All', 'value': 'allradiodata'},
+                                                                {'label': 'Top 10 rows', 'value': 'head'},
+                                                                {'label': 'Last 10 rows', 'value': 'tail'}
+                                                            ],
+                                                            value='allradiodata',
+                                                            labelStyle={'display': 'inline-block','padding': '5px'},
+                                                            inputStyle={
+                                                                "margin-right": "5px",
+                                                            },
+                                                            inputClassName="checkmark",
+                                                            style={"text-align": "right"},
+                                                            className="myallradio"
+                                                        ),
+                                                    ]
+                                            )
+                                        ),
+                                        html.Div(
+                                            id='output-data-upload',
+                                            className='table-wrapper-scroll-y my-custom-scrollbar'
+                                        )
+                                    ]
                                 ),
                                 style={'margin': '10px'},
 
@@ -377,71 +474,71 @@ app.layout = html.Div([
                         )
                     ]
                 ),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        html.H5("Graph 1", className="fill_missing"),
-
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': '300px'
-                                },
-                            ),
-                        ),
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        html.H5("Graph 2", className="drop_missing"),
-
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': '300px'
-                                },
-                            )
-                        )
-                    ]
-                ),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        html.H5("Graph 3", className="fill_missing"),
-
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': '300px'
-                                },
-                            ),
-                        ),
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        html.H5("Graph 4",
-                                                className="drop_missing"),
-
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': '300px'
-                                },
-                            )
-                        )
-                    ]
-                ),
+                # dbc.Row(
+                #     [
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #                         html.H5("Graph 1", className="fill_missing"),
+                #
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': '300px'
+                #                 },
+                #             ),
+                #         ),
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #                         html.H5("Graph 2", className="drop_missing"),
+                #
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': '300px'
+                #                 },
+                #             )
+                #         )
+                #     ]
+                # ),
+                # dbc.Row(
+                #     [
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #                         html.H5("Graph 3", className="fill_missing"),
+                #
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': '300px'
+                #                 },
+                #             ),
+                #         ),
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #                         html.H5("Graph 4",
+                #                                 className="drop_missing"),
+                #
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': '300px'
+                #                 },
+                #             )
+                #         )
+                #     ]
+                # ),
             ]
         )
 
@@ -491,6 +588,54 @@ def display_page(pathname):
         return {"display": "inline"}, {"display": "none"}
 
 
+@app.callback(
+        Output('output-data-describe',"children"),
+        [
+            Input('upload-data', 'contents'),
+            Input('upload-data', 'filename'),
+            Input('show_stat', 'value')
+        ],
+)
+def update_desc(contents, filename, show_stat):
+    if contents is not None:
+        print(show_stat)
+        if show_stat:
+            contents = contents[0]
+            filename = filename[0]
+            df = parse_data(contents, filename)
+            # pd.options.display.float_format = '${:,.4f}'.format
+            dt = df.describe()
+            dt=dt.reset_index()
+            dt=dt.rename(columns={"index": "" })
+            # dt = df.applymap( "${0:.f}".format )
+            table =dbc.Card(
+                dbc.CardBody(
+                    [
+                        dbc.Table.from_dataframe(dt,
+                                                 className="all_data",
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 size="sm",
+                                                 style={
+                                                     "padding": "0",
+                                                     "width": "100"
+                                                 }
+                                                 )
+                        ]
+                ),
+                style={'margin': '10px'},
+            )
+
+            return table
+        else:
+            return None
+    else:
+        return None
+
+
+
 
 @app.callback(
     [
@@ -498,6 +643,9 @@ def display_page(pathname):
         Output("output-values", "children"),
         Output("output-column", "children"),
         Output("output-column-values", "children"),
+        Output("output-col", "children"),
+
+
 
     ], # Return Childern value
     [
@@ -526,8 +674,15 @@ def update_output(contents, filename):
             try:
                 s.append((i, most_frequent(lst)))
             except:
-                s.append((i, 'CHAR'))
-        # print(s)
+                s.append((i, 'CATEGORY'))
+
+        dt = df.dtypes
+        dlist = [str( dt[1] ) for dt in dt.iteritems()]
+        print(s)
+
+        # dt1=dbc.Table.from_dataframe(dt)
+
+
 
         # for ent in s:
         #     print(ent[0], ent[1])
@@ -537,20 +692,31 @@ def update_output(contents, filename):
             "Number of columns",
             "Number of rows",
             "Columns with empty cell",
-            "Total duplicate rows"
+            "Total duplicate rows",
+            "Missing Percentage"
+
         ]
+        percent_missing = df.isnull().sum() / df.shape[0]
+        per = (sum( percent_missing ) / len( df.columns ))
+        per = "%.3f" % per
+        print(per)
 
         columnValueList = [
             len(df.columns),
             len(df),
             len(mis),
-            df.duplicated().sum()
+            df.duplicated().sum(),
+            per
+
+
         ]
 
         return [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in columnList], \
                [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in columnValueList],\
                [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in [ent[0] for ent in s]], \
-               [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in [ent[1] for ent in s]]
+               [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in [ent[1] for ent in s]],\
+               [html.Li( i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'} ) for i in [str( dt[1] ) for dt in dt.iteritems()]]
+
 
     else:
         columnList = [
@@ -559,7 +725,7 @@ def update_output(contents, filename):
             "Columns with empty cell",
             "Total duplicate rows"
         ]
-        return [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in columnList], None, None, None
+        return [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in columnList], None, None, None, None
 
 @app.callback(Output('dynamic-reaplce', 'options'),
               [
@@ -615,11 +781,14 @@ def update_multi(contents, filename):
                   Input("dropall", "n_clicks"),
                   Input("dropdup", "n_clicks"),
                   Input("dynamic-choice", "value"),
-                  Input("dynamic-reaplce", "value")
+                  Input("dynamic-reaplce", "value"),
+                  Input("allradio", "value")
+
                   # Input(component_id='dynamic-choice', component_property='value')
               ]
               )
-def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValues,dynamic_choice):
+def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValues,dynamic_choice,radioall):
+    print(radioall)
     if contents is not None and is_selected == "all":
         if dropall:
             if len(multiValues) != 0:
@@ -629,34 +798,44 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
 
                 df = df.dropna(axis=0, subset=multiValues)
 
-                table = html.Div([
-                    html.H5(filename),
-                    dash_table.DataTable(
-                        data=df.to_dict('rows'),
-                        columns=[{'name': i,
-                                  'id': i,
-                                  'deletable': True,
-                                  'renamable': True}
-                                 for i in df.columns
-                                 ],
-                        page_size=20,
-                        fixed_rows={'headers': True, 'data': 0},
-                        style_table={
-                            'height': '300px',
-                            'overflowY': 'auto',
-                        },
-                        style_cell_conditional=[
-                            {
-                                'if': {'column_id': i},
-                                'textAlign': 'center'
-                            } for i in df.columns
-                        ],
-                        editable=True,
-                        row_deletable=True,
-                        filter_action="native",
-                        sort_action="native",
-                    ),
-                ])
+                # table = html.Div([
+                #     html.H5(filename),
+                #     dash_table.DataTable(
+                #         data=df.to_dict('rows'),
+                #         columns=[{'name': i,
+                #                   'id': i,
+                #                   'deletable': True,
+                #                   'renamable': True}
+                #                  for i in df.columns
+                #                  ],
+                #         page_size=20,
+                #         fixed_rows={'headers': True, 'data': 0},
+                #         style_table={
+                #             'height': '400px',
+                #             'overflowY': 'auto',
+                #         },
+                #         style_cell_conditional=[
+                #             {
+                #                 'if': {'column_id': i},
+                #                 'textAlign': 'center'
+                #             } for i in df.columns
+                #         ],
+                #         editable=True,
+                #         row_deletable=True,
+                #         filter_action="native",
+                #         sort_action="native",
+                #     ),
+                # ])
+                table = dbc.Table.from_dataframe(df,
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 # size="sm",
+                                                 # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                                 style={
+                                                     "padding": "0",
+                                                 })
             else:
                 contents = contents[0]
                 filename = filename[0]
@@ -664,34 +843,45 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
 
                 df = df.dropna()
 
-                table = html.Div([
-                    html.H5(filename),
-                    dash_table.DataTable(
-                        data=df.to_dict('rows'),
-                        columns=[{'name': i,
-                                  'id': i,
-                                  'deletable': True,
-                                  'renamable': True}
-                                 for i in df.columns
-                                 ],
-                        # page_size=20,
-                        fixed_rows={'headers': True, 'data': 0},
-                        style_table={
-                            'height': '300px',
-                            'overflowY': 'auto',
-                        },
-                        style_cell_conditional=[
-                            {
-                                'if': {'column_id': i},
-                                'textAlign': 'center'
-                            } for i in df.columns
-                        ],
-                        editable=True,
-                        row_deletable=True,
-                        filter_action="native",
-                        sort_action="native",
-                    ),
-                ])
+                # table = html.Div([
+                #     html.H5(filename),
+                #     dash_table.DataTable(
+                #         data=df.to_dict('rows'),
+                #         columns=[{'name': i,
+                #                   'id': i,
+                #                   'deletable': True,
+                #                   'renamable': True}
+                #                  for i in df.columns
+                #                  ],
+                #         # page_size=20,
+                #         fixed_rows={'headers': True, 'data': 0},
+                #         style_table={
+                #             'height': '300px',
+                #             'overflowY': 'auto',
+                #         },
+                #         style_cell_conditional=[
+                #             {
+                #                 'if': {'column_id': i},
+                #                 'textAlign': 'center'
+                #             } for i in df.columns
+                #         ],
+                #         editable=True,
+                #         row_deletable=True,
+                #         filter_action="native",
+                #         sort_action="native",
+                #     ),
+                # ])
+
+                table = dbc.Table.from_dataframe(df,
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 # size="sm",
+                                                 # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                                 style={
+                                                     "padding": "0",
+                                                 })
 
             return table
         elif dropdup:
@@ -701,104 +891,166 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
 
             df = df.drop_duplicates(keep='first')
 
-            table = html.Div([
-                html.H5(filename),
-                dash_table.DataTable(
-                    data=df.to_dict('records'),
-                    columns=[{'name': i,
-                              'id': i,
-                              'deletable': True,
-                              'renamable': True}
-                             for i in df.columns
-                             ],
-                    page_size=20,
-                    fixed_rows={'headers': True, 'data': 0},
-                    style_table={
-                        'height': '300px',
-                        'overflowY': 'auto',
-                    },
-                    style_cell_conditional=[
-                        {
-                            'if': {'column_id': i},
-                            'textAlign': 'center'
-                        } for i in df.columns
-                    ],
-                    editable=True,
-                    row_deletable=True,
-                    filter_action="native",
-                    sort_action="native",
-                    # fixed_rows={'headers': True, 'data': 0},
+            # table = html.Div([
+            #     html.H5(filename),
+            #     dash_table.DataTable(
+            #         data=df.to_dict('records'),
+            #         columns=[{'name': i,
+            #                   'id': i,
+            #                   'deletable': True,
+            #                   'renamable': True}
+            #                  for i in df.columns
+            #                  ],
+            #         page_size=20,
+            #         fixed_rows={'headers': True, 'data': 0},
+            #         style_table={
+            #             'height': '300px',
+            #             'overflowY': 'auto',
+            #         },
+            #         style_cell_conditional=[
+            #             {
+            #                 'if': {'column_id': i},
+            #                 'textAlign': 'center'
+            #             } for i in df.columns
+            #         ],
+            #         editable=True,
+            #         row_deletable=True,
+            #         filter_action="native",
+            #         sort_action="native",
+            #         # fixed_rows={'headers': True, 'data': 0},
+            #
+            #         # style_as_list_view=True,
+            #     ),
+            #
+            #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+            #
+            #     # dcc.Graph(id='adding-rows-graph'),
+            #     html.Hr(),
+            #
+            #     # html.Div('Raw Content'),
+            #     # html.Pre(contents[0:200] + '...', style={
+            #     #     'whiteSpace': 'pre-wrap',
+            #     #     'wordBreak': 'break-all'
+            #     # })
+            # ])
 
-                    # style_as_list_view=True,
-                ),
-
-                # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
-
-                # dcc.Graph(id='adding-rows-graph'),
-                html.Hr(),
-
-                # html.Div('Raw Content'),
-                # html.Pre(contents[0:200] + '...', style={
-                #     'whiteSpace': 'pre-wrap',
-                #     'wordBreak': 'break-all'
-                # })
-            ])
+            table = dbc.Table.from_dataframe(df,
+                                             bordered=True,
+                                             hover=True,
+                                             responsive=True,
+                                             striped=True,
+                                             # size="sm",
+                                             # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                             style={
+                                                 "padding": "0",
+                                             })
 
             return table
+
         else:
-            contents = contents[0]
-            filename = filename[0]
-            df = parse_data(contents, filename)
+            if radioall=='allradiodata':
 
-            table = html.Div([
-                html.H5(filename),
-                dash_table.DataTable(
-                    data=df.to_dict('rows'),
-                    columns=[{'name': i,
-                              'id': i,
-                              'deletable': True,
-                              'renamable': True}
-                             for i in df.columns
-                             ],
-                    # page_size=20,
-                    fixed_rows={'headers': True, 'data': 0},
-                    style_table={
-                        'height': '300px',
-                        'overflowY': 'auto',
-                    },
-                    style_cell={  # ensure adequate header width when text is shorter than cell's text
-                        'minWidth': 95, 'maxWidth': 95, 'width': 95
-                    },
-                    style_cell_conditional=[
-                        {
-                            'if': {'column_id': i},
-                            'textAlign': 'center'
-                        } for i in df.columns
-                    ],
-                    style_data={  # overflow cells' content into multiple lines
-                        'whiteSpace': 'normal',
-                        'height': 'auto'
-                    },
-                    editable=True,
-                    row_deletable=True,
-                    filter_action="native",
-                    sort_action="native",
+                contents = contents[0]
+                filename = filename[0]
+                df = parse_data(contents, filename)
 
-                ),
+                table = dbc.Table.from_dataframe(df,
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 # size="sm",
+                                                 # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                                 style={
+                                                     "padding": "0",
+                                                 })
 
-                # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+                # table = html.Div([
+                #     html.H5(filename),
+                #     dash_table.DataTable(
+                #         data=df.to_dict('rows'),
+                #         columns=[{'name': i,
+                #                   'id': i,
+                #                   'deletable': True,
+                #                   'renamable': True}
+                #                  for i in df.columns
+                #                  ],
+                #         # page_size=20,
+                #         fixed_rows={'headers': True, 'data': 0},
+                #         style_table={
+                #             'height': '300px',
+                #             'overflowY': 'auto',
+                #         },
+                #         style_cell={  # ensure adequate header width when text is shorter than cell's text
+                #             'minWidth': 95, 'maxWidth': 95, 'width': 95
+                #         },
+                #         style_cell_conditional=[
+                #             {
+                #                 'if': {'column_id': i},
+                #                 'textAlign': 'center'
+                #             } for i in df.columns
+                #         ],
+                #         style_data={  # overflow cells' content into multiple lines
+                #             'whiteSpace': 'normal',
+                #             'height': 'auto'
+                #         },
+                #         editable=True,
+                #         row_deletable=True,
+                #         filter_action="native",
+                #         sort_action="native",
+                #
+                #     ),
+                #
+                #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+                #
+                #     # dcc.Graph(id='adding-rows-graph'),
+                #     # html.Hr(),
+                #
+                #     # html.Div('Raw Content'),
+                #     # html.Pre(contents[0:200] + '...', style={
+                #     #     'whiteSpace': 'pre-wrap',
+                #     #     'wordBreak': 'break-all'
+                #     # })
+                # ])
 
-                # dcc.Graph(id='adding-rows-graph'),
-                # html.Hr(),
+                return table
+            elif radioall=='head':
+                contents = contents[0]
+                filename = filename[0]
+                df = parse_data( contents, filename )
+                df=df.head(10)
 
-                # html.Div('Raw Content'),
-                # html.Pre(contents[0:200] + '...', style={
-                #     'whiteSpace': 'pre-wrap',
-                #     'wordBreak': 'break-all'
-                # })
-            ])
+                table = dbc.Table.from_dataframe(df,
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 # size="sm",
+                                                 # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                                 style={
+                                                     "padding": "0",
+                                                 })
 
-            return table
+                return table
+            elif radioall=='tail':
+                contents = contents[0]
+                filename = filename[0]
+                df = parse_data( contents, filename )
+                df=df.tail(10)
+
+                table = dbc.Table.from_dataframe(df,
+                                                 bordered=True,
+                                                 hover=True,
+                                                 responsive=True,
+                                                 striped=True,
+                                                 # size="sm",
+                                                 # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                                 style={
+                                                     "padding": "0",
+                                                 })
+
+                return table
+
     elif contents is not None and is_selected == "mean":
         print(dynamic_choice)
         contents = contents[0]
@@ -810,46 +1062,56 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
             mean = df[i].mean()
             df[i] = df[i].fillna(mean)
 
-        table = html.Div([
-            html.H5(filename),
-            dash_table.DataTable(
-                data=df.to_dict('rows'),
-                columns=[{'name': i,
-                          'id': i,
-                          'deletable': True,
-                          'renamable': True}
-                         for i in df.columns
-                         ],
-                page_size=20,
-                fixed_rows={'headers': True, 'data': 0},
-                style_table={
-                    'height': '300px',
-                    'overflowY': 'auto',
-                },
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': i},
-                        'textAlign': 'center'
-                    } for i in df.columns
-                ],
-                editable=True,
-                row_deletable=True,
-                filter_action="native",
-                sort_action="native",
-                # style_as_list_view=True,
-            ),
-
-            # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
-
-            # dcc.Graph(id='adding-rows-graph'),
-            html.Hr(),
-
-            # html.Div('Raw Content'),
-            # html.Pre(contents[0:200] + '...', style={
-            #     'whiteSpace': 'pre-wrap',
-            #     'wordBreak': 'break-all'
-            # })
-        ])
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+        #
+        #     # dcc.Graph(id='adding-rows-graph'),
+        #     html.Hr(),
+        #
+        #     # html.Div('Raw Content'),
+        #     # html.Pre(contents[0:200] + '...', style={
+        #     #     'whiteSpace': 'pre-wrap',
+        #     #     'wordBreak': 'break-all'
+        #     # })
+        # ])
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
 
         return table
     elif contents is not None and is_selected == "mode":
@@ -862,46 +1124,57 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
             mode = df[i].mode()
             df[i] = df[i].fillna(mode)
 
-        table = html.Div([
-            html.H5(filename),
-            dash_table.DataTable(
-                data=df.to_dict('rows'),
-                columns=[{'name': i,
-                          'id': i,
-                          'deletable': True,
-                          'renamable': True}
-                         for i in df.columns
-                         ],
-                page_size=20,
-                fixed_rows={'headers': True, 'data': 0},
-                style_table={
-                    'height': '300px',
-                    'overflowY': 'auto',
-                },
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': i},
-                        'textAlign': 'center'
-                    } for i in df.columns
-                ],
-                editable=True,
-                row_deletable=True,
-                filter_action="native",
-                sort_action="native",
-                # style_as_list_view=True,
-            ),
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+        #
+        #     # dcc.Graph(id='adding-rows-graph'),
+        #     html.Hr(),
+        #
+        #     # html.Div('Raw Content'),
+        #     # html.Pre(contents[0:200] + '...', style={
+        #     #     'whiteSpace': 'pre-wrap',
+        #     #     'wordBreak': 'break-all'
+        #     # })
+        # ])
 
-            # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
-
-            # dcc.Graph(id='adding-rows-graph'),
-            html.Hr(),
-
-            # html.Div('Raw Content'),
-            # html.Pre(contents[0:200] + '...', style={
-            #     'whiteSpace': 'pre-wrap',
-            #     'wordBreak': 'break-all'
-            # })
-        ])
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
 
         return table
     elif contents is not None and is_selected == "median":
@@ -914,40 +1187,52 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
             median = df[i].median()
             df[i] = df[i].fillna(median)
 
-        table = html.Div([
-            html.H5(filename),
-            dash_table.DataTable(
-                data=df.to_dict('rows'),
-                columns=[{'name': i,
-                          'id': i,
-                          'deletable': True,
-                          'renamable': True}
-                         for i in df.columns
-                         ],
-                page_size=20,
-                fixed_rows={'headers': True, 'data': 0},
-                style_table={
-                    'height': '300px',
-                    'overflowY': 'auto',
-                },
-                style_cell_conditional=[
-                    {
-                        'if': {'column_id': i},
-                        'textAlign': 'center'
-                    } for i in df.columns
-                ],
-                editable=True,
-                row_deletable=True,
-                filter_action="native",
-                sort_action="native",
-                # style_as_list_view=True,
-            ),
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     html.Hr(),
+        #
+        # ])
 
-            html.Hr(),
-
-        ])
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
 
         return table
+
 
 
 if __name__ == '__main__':
