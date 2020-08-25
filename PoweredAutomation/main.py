@@ -7,9 +7,10 @@ import dash_html_components as html
 import dash_table
 import dash_bootstrap_components as dbc # Dash componetents
 import pandas as pd
-# from Pages import analytics_page, import_data
 import spacy
 import dash_daq as daq
+import plotly.express as px
+import numpy as np
 
 
 app = dash.Dash(
@@ -44,6 +45,366 @@ search_bar = dbc.Row(
     align="center",
 
 )
+# fillmiss= html.Div(
+#     [
+#         # html.H5( "Fill missing values using below options or select columns",
+#         #      className="fill_missing" ),
+#         dbc.Row(
+#             [
+#                 dbc.Col(
+#                     [
+#                         html.H5("Select columns"),
+#                         dcc.Dropdown(
+#                             id='dynamic-reaplce',
+#                             multi=True,
+#                             placeholder='Filter Column',
+#                         ),
+#                      ]
+#                 ),
+#                 # dbc.Col( dbc.RadioItems( id="slct_year",
+#                 #                          # className="radio-inline",
+#                 #                          options=[
+#                 #                              {'label': 'Show All', 'value': 'all'},
+#                 #                              {'label': 'Mean', 'value': 'mean'},
+#                 #                              {'label': 'Mode', 'value': 'mode'},
+#                 #                              {'label': 'Median', 'value': 'median'}
+#                 #                          ],
+#                 #                          value='all',
+#                 #                          labelStyle={'display': 'inline-block',
+#                 #                                      'text-align': 'justify'}
+#                 #                          # radio button with label
+#                 #                          ),
+#                 #
+#                 #          )
+#                 dbc.Col(
+#                     # dbc.RadioItems(
+#                     #     id="slct_year",
+#                     #     options=[
+#                     #        {'label': 'Show All', 'value': 'all'},
+#                     #        {'label': 'Mean', 'value': 'mean'},
+#                     #        {'label': 'Mode', 'value': 'mode'},
+#                     #        {'label': 'Median', 'value': 'median'}
+#                     #    ],
+#                     #     value='all',
+#                     #     labelStyle={
+#                     #         'display': 'inline-block',
+#                     #         'text-align': 'justify'
+#                     #     }
+#                     # ),
+#                     [html.H5("Replace with"),
+#                     dcc.Dropdown(
+#                         id='slct_year',
+#                         options=[
+#                             # {'label': 'Show All', 'value': 'all'},
+#                             {'label': 'Mean', 'value': 'mean'},
+#                             {'label': 'Mode', 'value': 'mode'},
+#                             {'label': 'Median', 'value': 'median'}
+#                         ],
+#                         value=''
+#                     ),]
+#                 ),
+#                 dbc.Col(
+#                     dbc.Button(
+#                         "Fill Missing",
+#                         color="info",
+#                         className="mr-1",
+#                         id="dropall",
+#                         style={
+#                             'margin-top': '27px',
+#                             'padding': '8px'
+#                         },
+#                         # size="sm"
+#                     ),
+#                 )
+#             ]
+#         )
+#     ]
+# )
+
+# dropnull = html.Div(
+#     [
+#
+#
+#         dbc.Row(
+#             [
+#                 dbc.Col(
+#                     [
+#                         html.H5("Drop all null value rows",),
+#                         dcc.Dropdown(
+#                             id='dynamic-choice_null',
+#                             multi=True,
+#                             placeholder='Filter Column'
+#                         ),
+#                     ]
+#                 ),
+#                 dbc.Col(
+#                     dbc.Button(
+#                         "Drop All Null",
+#                         color="info",
+#                         className="mr-1",
+#                         id="dropall",
+#                         style={
+#                             'margin-top': '27px',
+#                             'padding': '8px'
+#                         },
+#                         # size="sm"
+#                     ),
+#                     # width=3
+#                 ),
+#             ]
+#         )
+#
+#     ]
+# ),
+
+# fillmiss1= dbc.Row(
+#                     [
+#                         dbc.Col(
+#                             dbc.Card(
+#                                 dbc.CardBody(
+#                                     [
+#
+#                                         html.H5("Fill missing values using below options or select columns",
+#                                                 className="fill_missing"),
+#                                         dbc.Row(
+#                                             [
+#                                                 dbc.Col(
+#                                                     [
+#                                                         dcc.Dropdown(
+#                                                             id='dynamic-reaplce',
+#                                                             multi=True,
+#                                                             placeholder='Filter Column',
+#                                                         ),
+#                                                      ]
+#                                                 ),
+#                                                 dbc.Col(
+#                                                     # dbc.RadioItems(
+#                                                     #     id="slct_year",
+#                                                     #     options=[
+#                                                     #        {'label': 'Show All', 'value': 'all'},
+#                                                     #        {'label': 'Mean', 'value': 'mean'},
+#                                                     #        {'label': 'Mode', 'value': 'mode'},
+#                                                     #        {'label': 'Median', 'value': 'median'}
+#                                                     #    ],
+#                                                     #     value='all',
+#                                                     #     labelStyle={
+#                                                     #         'display': 'inline-block',
+#                                                     #         'text-align': 'justify'
+#                                                     #     }
+#                                                     # ),
+#                                                     dbc.DropdownMenu(
+#                                                         id="slct_year",
+#                                                         label="Menu",
+#                                                         children=[
+#                                                             dbc.DropdownMenuItem("Show All"),
+#                                                             dbc.DropdownMenuItem("Mean"),
+#                                                             dbc.DropdownMenuItem("Mode"),
+#                                                             dbc.DropdownMenuItem("Median"),
+#                                                         ],
+#                                                     )
+#                                                 ),
+#                                                 dbc.Col(
+#                                                     dbc.Button(
+#                                                         "Replace",
+#                                                         color="info",
+#                                                         className="mr-1",
+#                                                         id="dropall",
+#                                                         # style={
+#                                                         #     'margin-top': '10px',
+#                                                         #     'padding': '5px'
+#                                                         # },
+#                                                         # size="sm"
+#                                                     ),
+#                                                 )
+#                                             ]
+#                                         )
+#                                     ]
+#                                 ),
+#                                 style={
+#                                     'margin': '10px',
+#                                     'height': 'auto'  # Automatic hieght increase
+#                                 },
+#                             ),
+#                         ),
+#                         dbc.Col(
+#                             dbc.Card(
+#                                 dbc.CardBody(
+#                                     [
+#
+#                                         html.H5("Drop all null value rows or Drop duplicates using below buttons",
+#                                                 className="drop_missing"),
+#
+#                                         # html.Div(id='dynamic-choice'),
+#                                         dcc.Dropdown(id='dynamic-choice',
+#                                                      multi=True,
+#                                                      placeholder='Filter Column'),
+#
+#                                         dbc.Row(
+#                                             [
+#                                                 dbc.Col(
+#                                                     dbc.Button(
+#                                                         "Drop All Null",
+#                                                         color="info",
+#                                                         className="mr-1",
+#                                                         id="dropall",
+#                                                         style={
+#                                                             'margin-top': '10px',
+#                                                             'padding': '5px'
+#                                                         },
+#                                                         size="sm"
+#                                                     ),
+#                                                     width=3
+#                                                 ),
+#                                                 dbc.Col(
+#                                                     dbc.Button(
+#                                                         "Drop Duplicate",
+#                                                         color="warning",
+#                                                         className="mr-1",
+#                                                         id="dropdup",
+#                                                         style={
+#                                                             'margin-top': '10px',
+#                                                             'padding': '5px'
+#                                                         },
+#                                                         size="sm"
+#                                                     ),
+#                                                     width=3
+#                                                 ),
+#                                                 dbc.Col(
+#                                                     daq.ToggleSwitch(
+#                                                         id='show_stat',
+#                                                         value=False,
+#                                                         label='Show/Hide Statistics',
+#                                                         labelPosition='left',
+#                                                         style={
+#                                                             'margin-top': '10px',
+#                                                             'padding': '5px'
+#                                                         },
+#                                                     ),
+#                                                 )
+#                                             ]
+#                                         )
+#
+#                                         # dbc.Button(
+#                                         #     "Show Statistics",
+#                                         #     color="#ebc334",
+#                                         #     className="mr-2",
+#                                         #     id="show_stat",
+#                                         #     n_clicks=0,
+#                                         #     # value="show",
+#                                         #     style={
+#                                         #         'margin-top': '10px'
+#                                         #     }
+#                                         # ),
+#                                     ]
+#                                 ),
+#                                 style={
+#                                     'margin': '10px',
+#                                     'height': 'auto'
+#                                 },
+#                             )
+#                         )
+#                     ],
+#                 ),
+
+# dropdup = html.Div(
+#     [
+#         dbc.Row(
+#             [
+#                 dbc.Col(
+#                     [
+#                         html.H5("Drop duplicates"),
+#                         dcc.Dropdown(
+#                             id='dynamic-choice_dup',
+#                             multi=True,
+#                             placeholder='Filter Column'
+#                         ),
+#                     ]
+#                 ),
+#                 dbc.Col(
+#                     dbc.Button(
+#                         "Drop Duplicate",
+#                         color="warning",
+#                         className="mr-1",
+#                         id="dropdup",
+#                         style={
+#                             'margin-top': '27px',
+#                             'padding': '8px'
+#                         },
+#                         # size="sm"
+#                     ),
+#                     # width=3
+#                 ),
+#             ]
+#         )
+#     ]
+# ),
+
+# outlier = html.Div(
+#     [
+#         dbc.Row(
+#             [
+#                 dbc.Col(
+#                     [
+#                         html.H5("Show Outlier"),
+#                         dcc.Dropdown(
+#                             id='dynamic-choice_outlier',
+#                             multi=True,
+#                             placeholder='Filter Column'
+#                         ),
+#                     ]
+#                 ),
+#                 dbc.Col(
+#                     dbc.Button(
+#                         "Show Outlier",
+#                         color="warning",
+#                         className="mr-1",
+#                         id="dropdup",
+#                         style={
+#                             'margin-top': '27px',
+#                             'padding': '8px'
+#                         },
+#                         # size="sm"
+#                     ),
+#                     # width=3
+#                 ),
+#             ]
+#         )
+#     ]
+# ),
+
+# datasplit = html.Div(
+#     [
+#         dbc.Row(
+#             [
+#                 dbc.Col(
+#                     [
+#                         # html.H5("Enter Chunks"),
+#                         dbc.Input(
+#                             id="input",
+#                             placeholder="Chunks",
+#                             type="text",
+#                             # style={
+#                             #     'margin-top': '27px',
+#                             #     'padding': '8px'
+#                             # }
+#                         ),
+#                     ]
+#                 ),
+#                 dbc.Col(
+#                     [
+#                         dbc.Button(
+#                             "Split Data",
+#                             color="primary",
+#                             className="mr-11"
+#                         ),
+#                     ]
+#                 )
+#             ]
+#         )
+#     ]
+# ),
+
+
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
@@ -174,7 +535,6 @@ app.layout = html.Div([
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-
                             dbc.Col(dbc.NavbarBrand("Powered Automation", className="ml-2")),
                         ],
                         align="center",
@@ -192,211 +552,254 @@ app.layout = html.Div([
 
         dbc.Container(
             [
+                # dbc.Row(
+                #     [
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #
+                #                         html.H5("Fill missing values using below options or select columns",
+                #                                 className="fill_missing"),
+                #                         dbc.Row([
+                #                             dbc.Col(
+                #                                 [dcc.Dropdown(id='dynamic-reaplce',
+                #
+                #                                              multi=True,
+                #                                              placeholder='Filter Column',
+                #                                              ),
+                #
+                #                                  ]
+                #
+                #                             ),
+                #                             dbc.Col(dbc.RadioItems(id="slct_year",
+                #                                                    # className="radio-inline",
+                #                                                    options=[
+                #                                                        {'label': 'Show All', 'value': 'all'},
+                #                                                        {'label': 'Mean', 'value': 'mean'},
+                #                                                        {'label': 'Mode', 'value': 'mode'},
+                #                                                        {'label': 'Median', 'value': 'median'}
+                #                                                    ],
+                #                                                    value='all',
+                #                                                    labelStyle={'display': 'inline-block',
+                #                                                                'text-align': 'justify'}
+                #                                                    # radio button with label
+                #                                                    ),
+                #
+                #                                     )
+                #                         ])
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': 'auto'  # Automatic hieght increase
+                #                 },
+                #             ),
+                #         ),
+                #         dbc.Col(
+                #             dbc.Card(
+                #                 dbc.CardBody(
+                #                     [
+                #
+                #                         html.H5("Drop all null value rows or Drop duplicates using below buttons",
+                #                                 className="drop_missing"),
+                #
+                #                         # html.Div(id='dynamic-choice'),
+                #                         dcc.Dropdown(id='dynamic-choice',
+                #                                      multi=True,
+                #                                      placeholder='Filter Column'),
+                #
+                #                         dbc.Row(
+                #                             [
+                #                                 dbc.Col(
+                #                                     dbc.Button(
+                #                                         "Drop All Null",
+                #                                         color="info",
+                #                                         className="mr-1",
+                #                                         id="dropall",
+                #                                         style={
+                #                                             'margin-top': '10px',
+                #                                             'padding': '5px'
+                #                                         },
+                #                                         size="sm"
+                #                                     ),
+                #                                     width=3
+                #                                 ),
+                #                                 dbc.Col(
+                #                                     dbc.Button(
+                #                                         "Drop Duplicate",
+                #                                         color="warning",
+                #                                         className="mr-1",
+                #                                         id="dropdup",
+                #                                         style={
+                #                                             'margin-top': '10px',
+                #                                             'padding': '5px'
+                #                                         },
+                #                                         size="sm"
+                #                                     ),
+                #                                     width=3
+                #                                 ),
+                #                                 dbc.Col(
+                #                                     daq.ToggleSwitch(
+                #                                         id='show_stat',
+                #                                         value=False,
+                #                                         label='Show/Hide Statistics',
+                #                                         labelPosition='left',
+                #                                         style={
+                #                                             'margin-top': '10px',
+                #                                             'padding': '5px'
+                #                                         },
+                #                                     ),
+                #                                 )
+                #                             ]
+                #                         )
+                #
+                #                         # dbc.Button(
+                #                         #     "Show Statistics",
+                #                         #     color="#ebc334",
+                #                         #     className="mr-2",
+                #                         #     id="show_stat",
+                #                         #     n_clicks=0,
+                #                         #     # value="show",
+                #                         #     style={
+                #                         #         'margin-top': '10px'
+                #                         #     }
+                #                         # ),
+                #                     ]
+                #                 ),
+                #                 style={
+                #                     'margin': '10px',
+                #                     'height': 'auto'
+                #                 },
+                #             )
+                #         )
+                #     ],
+                #     style={
+                #         'margin-top': "100px" # Row style
+                #      }
+                # ),
+
                 dbc.Row(
                     [
                         dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
+                            [
 
-                                        html.H5("Fill missing values using below options or select columns",
-                                                className="fill_missing"),
-                                        dbc.Row([
-                                            dbc.Col(
-                                                [dcc.Dropdown(id='dynamic-reaplce',
+                                dbc.Card([
+                                    dbc.CardHeader(
+                                        [
+                                            dbc.Row(
+                                                [
+                                                    dbc.Col(
+                                                        [
+                                                            html.H5("Data Info", className="drop_missing", style={"text-align": "center"}),
+                                                        ],
 
-                                                             multi=True,
-                                                             placeholder='Filter Column',
-                                                             ),
+                                                    ),
+                                                    dbc.Col(
+                                                        [
+                                                            html.H5("Column Data Type", className="drop_missing", style={"text-align": "center"}),
+                                                        ]
+                                                    ),
+                                                    dbc.Col(
+                                                        [
+                                                            daq.ToggleSwitch(
+                                                                id='show_stat',
+                                                                value=False,
+                                                                label='Show Stats',
+                                                                labelPosition='left',
+                                                                # style={
+                                                                #     # 'margin-top': '10px',
+                                                                #     'padding': '0px'
+                                                                # },
 
-                                                 ]
-
-                                            ),
-                                            dbc.Col(dbc.RadioItems(id="slct_year",
-                                                                   # className="radio-inline",
-                                                                   options=[
-                                                                       {'label': 'Show All', 'value': 'all'},
-                                                                       {'label': 'Mean', 'value': 'mean'},
-                                                                       {'label': 'Mode', 'value': 'mode'},
-                                                                       {'label': 'Median', 'value': 'median'}
-                                                                   ],
-                                                                   value='all',
-                                                                   labelStyle={'display': 'inline-block',
-                                                                               'text-align': 'justify'}
-                                                                   # radio button with label
-                                                                   ),
-
+                                                            ),
+                                                        ],
+                                                        width=2
                                                     )
-                                        ])
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': 'auto'  # Automatic hieght increase
-                                },
-                            ),
+                                                ]
+                                            )
+                                        ]
+                                    ),
+                                    dbc.CardBody(
+                                        [
+                                            dbc.Row(
+                                                [
+                                                    dbc.Col(
+                                                        [
+                                                            dbc.Row(
+                                                                [
+                                                                    dbc.Col(
+                                                                        [
+                                                                            html.Ul(
+                                                                                id="output"
+                                                                            ),
+                                                                        ],
+                                                                        # width=3
+                                                                    ),
+                                                                    dbc.Col(
+                                                                        [
+                                                                            html.Ul(
+                                                                                id="output-values"
+                                                                            )
+                                                                        ]
+                                                                    )
+                                                                ]
+                                                            )
+                                                         ],
+                                                        width=6
+                                                    ),
+                                                    dbc.Col(
+                                                        [
+                                                            dbc.Row(
+                                                                [
+                                                                    dbc.Col(
+                                                                        [
+
+                                                                            html.Ul(
+                                                                                id="output-column"
+                                                                            ),
+
+
+                                                                        ]
+
+                                                                    ),
+
+                                                                    dbc.Col(
+                                                                        [
+                                                                            html.Ul(
+                                                                                id="output-column-values"
+                                                                            )
+                                                                        ]
+
+                                                                    ),
+
+                                                                    dbc.Col(
+                                                                        [
+                                                                            html.Ul(
+                                                                                id="output-col"
+                                                                            ),
+                                                                        ]
+                                                                    ),
+
+                                                                ]
+                                                            )
+                                                        ],
+                                                    )
+                                                ]
+                                            )
+                                        ]
+                                    ),
+                                ],
+                                    style={'margin-top': '20px'},
+                                )
+                            ]
                         ),
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-
-                                        html.H5("Drop all null value rows or Drop duplicates using below buttons",
-                                                className="drop_missing"),
-
-                                        # html.Div(id='dynamic-choice'),
-                                        dcc.Dropdown(id='dynamic-choice',
-                                                     multi=True,
-                                                     placeholder='Filter Column'),
-
-                                        dbc.Row(
-                                            [
-                                                dbc.Col(
-                                                    dbc.Button(
-                                                        "Drop All Null",
-                                                        color="info",
-                                                        className="mr-1",
-                                                        id="dropall",
-                                                        style={
-                                                            'margin-top': '10px',
-                                                            'padding': '5px'
-                                                        },
-                                                        size="sm"
-                                                    ),
-                                                    width=3
-                                                ),
-                                                dbc.Col(
-                                                    dbc.Button(
-                                                        "Drop Duplicate",
-                                                        color="warning",
-                                                        className="mr-1",
-                                                        id="dropdup",
-                                                        style={
-                                                            'margin-top': '10px',
-                                                            'padding': '5px'
-                                                        },
-                                                        size="sm"
-                                                    ),
-                                                    width=3
-                                                ),
-                                                dbc.Col(
-                                                    daq.ToggleSwitch(
-                                                        id='show_stat',
-                                                        value=False,
-                                                        label='Show/Hide Statistics',
-                                                        labelPosition='left',
-                                                        style={
-                                                            'margin-top': '10px',
-                                                            'padding': '5px'
-                                                        },
-                                                    ),
-                                                )
-                                            ]
-                                        )
-
-                                        # dbc.Button(
-                                        #     "Show Statistics",
-                                        #     color="#ebc334",
-                                        #     className="mr-2",
-                                        #     id="show_stat",
-                                        #     n_clicks=0,
-                                        #     # value="show",
-                                        #     style={
-                                        #         'margin-top': '10px'
-                                        #     }
-                                        # ),
-                                    ]
-                                ),
-                                style={
-                                    'margin': '10px',
-                                    'height': 'auto'
-                                },
-                            )
-                        )
                     ],
-                    style={
+                style={
                         'margin-top': "100px" # Row style
                      }
                 ),
 
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        dbc.Row(
-                                            [
-                                                dbc.Col(
-                                                    [
-                                                        html.H5("Data Info", className="drop_missing", style={"text-align": "center"}),
-                                                        dbc.Row(
-                                                            [
-                                                                dbc.Col(
-                                                                    [
-                                                                        html.Ul(
-                                                                            id="output"
-                                                                        ),
-                                                                    ]
-                                                                ),
-                                                                dbc.Col(
-                                                                    [
-                                                                        html.Ul(
-                                                                            id="output-values"
-                                                                        )
-                                                                    ]
-                                                                )
-                                                            ]
-                                                        )
-                                                     ]
-                                                ),
-                                                dbc.Col(
-                                                    [
-                                                        html.H5("Column Data Type", className="drop_missing", style={"text-align": "center"}),
-                                                        dbc.Row(
-                                                            [
-                                                                dbc.Col(
-                                                                    [
-
-                                                                        html.Ul(
-                                                                            id="output-column"
-                                                                        ),
-
-
-                                                                    ]
-
-                                                                ),
-
-                                                                dbc.Col(
-                                                                    [
-                                                                        html.Ul(
-                                                                            id="output-column-values"
-                                                                        )
-                                                                    ]
-
-                                                                ),
-
-                                                                dbc.Col(
-                                                                    [
-                                                                        html.Ul(
-                                                                            id="output-col"
-                                                                        ),
-                                                                    ]
-                                                                ),
-
-                                                            ]
-                                                        )
-                                                    ],
-                                                )
-                                            ]
-                                        )
-                                    ]
-                                ),
-                                style={'margin': '10px'},
-                            )
-                        ),
-                    ]
-                ),
                 dbc.Row(
                     [
                         dbc.Col(
@@ -407,138 +810,402 @@ app.layout = html.Div([
                 dbc.Row(
                     [
                         dbc.Col(
-                            html.Div(id='output-graph1')
+                            html.Div(id='corr-table')
                         ),
                         dbc.Col(
-                            html.Div(id='output-graph2')
+                            html.Div(id='output-heatmap')
                         )
                     ]
                 ),
                 dbc.Row(
                     [
                         dbc.Col(
-                            html.Div(id='output-graph3')
+                            [
+                                html.Div(id="outlier_graph")
+                            ]
                         )
                     ]
                 ),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            [
+                                dbc.Card(
+                                    [
+                                        # dbc.CardHeader(
+                                        #
+                                        # ),
+                                        dbc.CardBody(
+                                            [
+                                                dbc.Tabs(
+                                                    [
+                                                        dbc.Tab(
+                                                            html.Div(
+                                                                [
+                                                                    # html.H5( "Fill missing values using below options or select columns",
+                                                                    #      className="fill_missing" ),
+                                                                    dbc.Row(
+                                                                        [
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    html.H5(
+                                                                                        "Select columns",
+                                                                                    ),
+                                                                                    dcc.Dropdown(
+                                                                                        id='dynamic-reaplce',
+                                                                                        multi=True,
+                                                                                        placeholder='Filter Column',
+                                                                                    ),
+                                                                                 ],
+                                                                            ),
+                                                                            # dbc.Col( dbc.RadioItems( id="slct_year",
+                                                                            #                          # className="radio-inline",
+                                                                            #                          options=[
+                                                                            #                              {'label': 'Show All', 'value': 'all'},
+                                                                            #                              {'label': 'Mean', 'value': 'mean'},
+                                                                            #                              {'label': 'Mode', 'value': 'mode'},
+                                                                            #                              {'label': 'Median', 'value': 'median'}
+                                                                            #                          ],
+                                                                            #                          value='all',
+                                                                            #                          labelStyle={'display': 'inline-block',
+                                                                            #                                      'text-align': 'justify'}
+                                                                            #                          # radio button with label
+                                                                            #                          ),
+                                                                            #
+                                                                            #          )
+                                                                            dbc.Col(
+                                                                                # dbc.RadioItems(
+                                                                                #     id="slct_year",
+                                                                                #     options=[
+                                                                                #        {'label': 'Show All', 'value': 'all'},
+                                                                                #        {'label': 'Mean', 'value': 'mean'},
+                                                                                #        {'label': 'Mode', 'value': 'mode'},
+                                                                                #        {'label': 'Median', 'value': 'median'}
+                                                                                #    ],
+                                                                                #     value='all',
+                                                                                #     labelStyle={
+                                                                                #         'display': 'inline-block',
+                                                                                #         'text-align': 'justify'
+                                                                                #     }
+                                                                                # ),
+                                                                                [html.H5("Replace with"),
+                                                                                dcc.Dropdown(
+                                                                                    id='slct_year',
+                                                                                    options=[
+                                                                                        # {'label': 'Show All', 'value': 'all'},
+                                                                                        {'label': 'Mean', 'value': 'mean'},
+                                                                                        {'label': 'Mode', 'value': 'mode'},
+                                                                                        {'label': 'Median', 'value': 'median'}
+                                                                                    ],
+                                                                                    value=''
+                                                                                ),
+                                                                                 ]
+                                                                            ),
+                                                                            dbc.Col(
+                                                                                dbc.Button(
+                                                                                    "Fill Missing",
+                                                                                    color="info",
+                                                                                    className="mr-1",
+                                                                                    id="fill_missing",
+                                                                                    style={
+                                                                                        'margin-top': '27px',
+                                                                                        'padding': '8px'
+                                                                                    },
+                                                                                    # size="sm"
+                                                                                ),
+                                                                            )
+                                                                        ],
+                                                                        style={
+                                                                            "margin-top": "25px"
+                                                                        }
+                                                                    )
+                                                                ]
+                                                            ),
+                                                            label="Fill Missing Data",
+                                                            tab_id="tab-1"
+                                                        ),
+                                                        dbc.Tab(
+                                                            html.Div(
+                                                                [
+                                                                    dbc.Row(
+                                                                        [
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    html.H5("Drop all null value rows",),
+                                                                                    dcc.Dropdown(
+                                                                                        id='dynamic-choice_null',
+                                                                                        multi=True,
+                                                                                        placeholder='Filter Column'
+                                                                                    ),
+                                                                                ]
+                                                                            ),
+                                                                            dbc.Col(
+                                                                                dbc.Button(
+                                                                                    "Drop All Null",
+                                                                                    color="info",
+                                                                                    className="mr-1",
+                                                                                    id="dropall",
+                                                                                    style={
+                                                                                        'margin-top': '27px',
+                                                                                        'padding': '8px'
+                                                                                    },
+                                                                                    # size="sm"
+                                                                                ),
+                                                                                # width=3
+                                                                            ),
+                                                                        ],
+                                                                        style={
+                                                                            "margin-top": "25px"
+                                                                        }
+                                                                    )
+
+                                                                ]
+                                                            ),
+                                                            label="Drop Null Values",
+                                                            tab_id="tab-2"
+                                                        ),
+                                                        dbc.Tab(
+                                                            html.Div(
+                                                                [
+                                                                    dbc.Row(
+                                                                        [
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    html.H5("Drop duplicates"),
+                                                                                    dcc.Dropdown(
+                                                                                        id='dynamic-choice_dup',
+                                                                                        multi=True,
+                                                                                        placeholder='Filter Column'
+                                                                                    ),
+                                                                                ]
+                                                                            ),
+                                                                            dbc.Col(
+                                                                                dbc.Button(
+                                                                                    "Drop Duplicate",
+                                                                                    color="warning",
+                                                                                    className="mr-1",
+                                                                                    id="dropdup",
+                                                                                    style={
+                                                                                        'margin-top': '27px',
+                                                                                        'padding': '8px'
+                                                                                    },
+                                                                                    # size="sm"
+                                                                                ),
+                                                                                # width=3
+                                                                            ),
+                                                                        ],
+                                                                        style={
+                                                                            "margin-top": "25px"
+                                                                        }
+                                                                    )
+                                                                ]
+                                                            ),
+                                                            label="Drop Duplicates",
+                                                            tab_id="tab-3"
+                                                        ),
+                                                        dbc.Tab(
+                                                            html.Div(
+                                                                [
+                                                                    dbc.Row(
+                                                                        [
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    html.H5("Show Outlier"),
+                                                                                    dcc.Dropdown(
+                                                                                        id='dynamic-choice_outlier',
+                                                                                        multi=True,
+                                                                                        placeholder='Filter Column'
+                                                                                    ),
+                                                                                ]
+                                                                            ),
+                                                                            dbc.Col(
+                                                                                dbc.Button(
+                                                                                    "Show Outlier",
+                                                                                    color="warning",
+                                                                                    className="mr-1",
+                                                                                    id="show_outlier",
+                                                                                    style={
+                                                                                        'margin-top': '27px',
+                                                                                        'padding': '8px'
+                                                                                    },
+                                                                                    # size="sm"
+                                                                                ),
+                                                                                # width=3
+                                                                            ),
+                                                                        ],
+                                                                        style={
+                                                                            "margin-top": "25px"
+                                                                        }
+                                                                    )
+                                                                ]
+                                                            ),
+                                                            label="Outliers",
+                                                            tab_id="tab-4"
+                                                        ),
+                                                        dbc.Tab(
+                                                            html.Div(
+                                                                [
+                                                                    dbc.Row(
+                                                                        [
+                                                                            # html.H5("Split large data file", style={'text-align': "center"}),
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    # html.H5("Enter Chunks"),
+                                                                                    dbc.Input(
+                                                                                        id="Chunks_Input",
+                                                                                        placeholder="Chunks Size",
+                                                                                        type="text",
+                                                                                        # style={
+                                                                                        #     'margin-top': '27px',
+                                                                                        #     'padding': '8px'
+                                                                                        # }
+                                                                                    ),
+                                                                                ]
+                                                                            ),
+                                                                            # dbc.Col(
+                                                                            #     [
+                                                                            #         # html.H5("Enter Chunks"),
+                                                                            #         dbc.Input(
+                                                                            #             id="input_file",
+                                                                            #             placeholder="Input File Path",
+                                                                            #             type="text",
+                                                                            #             # style={
+                                                                            #             #     'margin-top': '27px',
+                                                                            #             #     'padding': '8px'
+                                                                            #             # }
+                                                                            #         ),
+                                                                            #     ]
+                                                                            # ),
+                                                                            # dbc.Col(
+                                                                            #     [
+                                                                            #         # html.H5("Enter Chunks"),
+                                                                            #         dbc.Input(
+                                                                            #             id="output_file",
+                                                                            #             placeholder="Output File Path",
+                                                                            #             type="text",
+                                                                            #             # style={
+                                                                            #             #     'margin-top': '27px',
+                                                                            #             #     'padding': '8px'
+                                                                            #             # }
+                                                                            #         ),
+                                                                            #     ]
+                                                                            # ),
+                                                                            dbc.Col(
+                                                                                [
+                                                                                    dbc.Button(
+                                                                                        "Split Data",
+                                                                                        color="primary",
+                                                                                        className="mr-11"
+                                                                                    ),
+                                                                                ]
+                                                                            )
+                                                                        ],
+                                                                        style={
+                                                                            "margin-top": "25px"
+                                                                        }
+                                                                    )
+                                                                ]
+                                                            ),
+                                                            label="Data Split",
+                                                            tab_id="tab-5"
+                                                        ),
+                                                        # dbc.Tab(label="Data Encoding", tab_id="tab-6"),
+                                                    ],
+                                                    id="card-tabs",
+                                                    card=True,
+                                                    active_tab="tab-1",
+                                                )
+                                            ]
+                                        ),
+                                    ],
+                                    style={'margin-top': '20px'},
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                # dbc.Row(
+                #     [
+                #         dbc.Col(
+                #             html.Div(id='output-pairplot')
+                #         )
+                #     ]
+                # ),
                 dbc.Row(
                     [
                         dbc.Col(
                             dbc.Card(
-                                dbc.CardBody(
-                                    # html.H5("Custom CSS", className="card-title"),
-                                    [
-                                        dbc.Row(
-                                            dbc.Col(
+                                [
+                                    dbc.CardHeader(
+                                        [
+                                            dbc.Row(
                                                 [
-                                                        dbc.Button(
-                                                            "Download Data",
-                                                            color="warning",
-                                                            className="mr-1",
-                                                            id="download_data",
-                                                            style={
-                                                                'margin-top': '10px',
-                                                                'padding': '5px'
-                                                            },
-                                                            size="sm"
-                                                        ),
-                                                        dcc.RadioItems(
-                                                            id="allradio",
-                                                            options=[
-                                                                {'label': 'All', 'value': 'allradiodata'},
-                                                                {'label': 'Top 10 rows', 'value': 'head'},
-                                                                {'label': 'Last 10 rows', 'value': 'tail'}
-                                                            ],
-                                                            value='allradiodata',
-                                                            labelStyle={'display': 'inline-block','padding': '5px'},
-                                                            inputStyle={
-                                                                "margin-right": "5px",
-                                                            },
-                                                            inputClassName="checkmark",
-                                                            style={"text-align": "right"},
-                                                            className="myallradio"
-                                                        ),
-                                                    ]
+                                                    dbc.Col(
+                                                        [
+                                                            dbc.Button(
+                                                                "Download Data",
+                                                                color="warning",
+                                                                className="mr-1",
+                                                                id="download_data",
+                                                                style={
+                                                                    'margin-top': '5px',
+                                                                    'padding': '7px'
+                                                                },
+                                                                # size="sm"
+                                                            ),
+                                                        ]
+                                                    ),
+                                                    dbc.Col(
+                                                        [
+                                                            dcc.RadioItems(
+                                                                id="allradio",
+                                                                options=[
+                                                                    {'label': 'All', 'value': 'allradiodata'},
+                                                                    {'label': 'Top 10 rows', 'value': 'head'},
+                                                                    {'label': 'Last 10 rows', 'value': 'tail'}
+                                                                ],
+                                                                value='allradiodata',
+                                                                labelStyle={'display': 'inline-block',
+                                                                            'padding': '5px'},
+                                                                inputStyle={
+                                                                    "margin-right": "5px",
+                                                                },
+                                                                inputClassName="checkmark",
+                                                                style={
+                                                                    'margin-top': '5px',
+                                                                    "text-align": "right"
+                                                                },
+                                                                className="myallradio"
+                                                            ),
+                                                        ]
+                                                    )
+                                                ]
                                             )
-                                        ),
-                                        html.Div(
-                                            id='output-data-upload',
-                                            className='table-wrapper-scroll-y my-custom-scrollbar'
-                                        )
-                                    ]
-                                ),
-                                style={'margin': '10px'},
+                                        ]
+                                    ),
+                                    dbc.CardBody(
+                                        [
+                                            dbc.Row(
+                                                dbc.Col(
+                                                    [
 
+
+                                                        ]
+                                                )
+                                            ),
+                                            html.Div(
+                                                id='output-data-upload',
+                                                className='table-wrapper-scroll-y my-custom-scrollbar'
+                                            ),
+                                            # html.P(id='save-button-hidden', style={'display':'none'}),
+                                        ]
+                                    ),
+                                ],
+                                style={'margin-top': '20px', 'margin-bottom': '20px'},
                             )
-
                         )
                     ]
                 ),
-                # dbc.Row(
-                #     [
-                #         dbc.Col(
-                #             dbc.Card(
-                #                 dbc.CardBody(
-                #                     [
-                #                         html.H5("Graph 1", className="fill_missing"),
-                #
-                #                     ]
-                #                 ),
-                #                 style={
-                #                     'margin': '10px',
-                #                     'height': '300px'
-                #                 },
-                #             ),
-                #         ),
-                #         dbc.Col(
-                #             dbc.Card(
-                #                 dbc.CardBody(
-                #                     [
-                #                         html.H5("Graph 2", className="drop_missing"),
-                #
-                #                     ]
-                #                 ),
-                #                 style={
-                #                     'margin': '10px',
-                #                     'height': '300px'
-                #                 },
-                #             )
-                #         )
-                #     ]
-                # ),
-                # dbc.Row(
-                #     [
-                #         dbc.Col(
-                #             dbc.Card(
-                #                 dbc.CardBody(
-                #                     [
-                #                         html.H5("Graph 3", className="fill_missing"),
-                #
-                #                     ]
-                #                 ),
-                #                 style={
-                #                     'margin': '10px',
-                #                     'height': '300px'
-                #                 },
-                #             ),
-                #         ),
-                #         dbc.Col(
-                #             dbc.Card(
-                #                 dbc.CardBody(
-                #                     [
-                #                         html.H5("Graph 4",
-                #                                 className="drop_missing"),
-                #
-                #                     ]
-                #                 ),
-                #                 style={
-                #                     'margin': '10px',
-                #                     'height': '300px'
-                #                 },
-                #             )
-                #         )
-                #     ]
-                # ),
             ]
         )
 
@@ -546,6 +1213,25 @@ app.layout = html.Div([
     id="page-1-content-1"),
 
 ])
+
+# @app.callback(
+#     Output("content", "children"),
+#     [
+#       Input("card-tabs", "active_tab")
+#     ]
+# )
+# def switch_tab(at):
+#     if at == "tab-1":
+#         return fillmiss
+#     elif at == "tab-2":
+#         return dropnull
+#     elif at=="tab-3":
+#         return dropdup
+#     elif at=="tab-4":
+#         return outlier
+#     elif at=="tab-5":
+#         return datasplit
+#     return None
 
 def parse_data(contents, filename):  #CSV or Excel read and return DF
     content_type, content_string = contents.split(',')
@@ -589,11 +1275,16 @@ def display_page(pathname):
 
 
 @app.callback(
-        Output('output-data-describe',"children"),
+        [Output('output-data-describe', "children"),
+         Output('corr-table', "children"),
+         Output('output-heatmap', "children"),
+
+         ],
         [
             Input('upload-data', 'contents'),
             Input('upload-data', 'filename'),
-            Input('show_stat', 'value')
+            Input('show_stat', 'value'),
+
         ],
 )
 def update_desc(contents, filename, show_stat):
@@ -607,33 +1298,185 @@ def update_desc(contents, filename, show_stat):
             dt = df.describe()
             dt=dt.reset_index()
             dt=dt.rename(columns={"index": "" })
+            # dt = dt.dropna()
             # dt = df.applymap( "${0:.f}".format )
             table =dbc.Card(
-                dbc.CardBody(
-                    [
-                        dbc.Table.from_dataframe(dt,
-                                                 className="all_data",
-                                                 bordered=True,
-                                                 hover=True,
-                                                 responsive=True,
-                                                 striped=True,
-                                                 size="sm",
-                                                 style={
-                                                     "padding": "0",
-                                                     "width": "100"
-                                                 }
-                                                 )
+
+                [
+                    dbc.CardHeader(
+                        html.H5("Statistics", style={"text-align": "center"}),
+                    ),
+                    dbc.CardBody(
+                        [
+                            dbc.Table.from_dataframe(dt,
+                                                     className="all_data",
+                                                     bordered=True,
+                                                     hover=True,
+                                                     responsive=True,
+                                                     striped=True,
+                                                     size="sm",
+                                                     style={
+                                                         "padding": "0",
+                                                         "width": "100"
+                                                     }
+                                                     )
+                            ]
+                    ),
+                ],
+                style={'margin-top': '20px'},
+            )
+            dt_corr = df.corr()
+            dt_corr = dt_corr.reset_index()
+            dt_corr = dt_corr.rename( columns={"index": ""} )
+            # dt_corr = dt_corr.dropna()
+            table_corr = dbc.Card(
+                [
+                    dbc.CardHeader(
+                        html.H5("Corealation", style={"text-align": "center"}),
+                    ),
+                    dbc.CardBody(
+                        [
+                            dbc.Table.from_dataframe( dt_corr,
+                                                      className="all_data",
+                                                      bordered=True,
+                                                      hover=True,
+                                                      responsive=True,
+                                                      striped=True,
+                                                      size="sm",
+                                                      style={
+                                                          "padding": "0",
+                                                          "width": "100"
+                                                      }
+                                                      )
                         ]
-                ),
-                style={'margin': '10px'},
+                    ),
+                ],
+                style={'margin-top': '20px', 'margin-right': '5px', 'height': "400px"},
+            )
+            htmap=dbc.Card(
+                [
+                    dbc.CardHeader(
+                        html.H5( "Corealation Plot", style={"text-align": "center"} ),
+                    ),
+                    dbc.CardBody(
+                        [
+                            dcc.Graph(
+                                id='StyleBox',
+                                figure=
+                                {
+                                    'data': [{
+                                        'z': dt_corr.values.T.tolist(),
+                                        'y': dt_corr.columns.tolist(),
+                                        'x': dt_corr.index.tolist(),
+                                        'ygap': 2,
+                                        'reversescale': 'true',
+                                        'colorscale': [[0, 'white'], [1, 'blue']],
+                                        'type': 'heatmap',
+                                    }],
+                                    'layout': {
+                                        'height': 250,
+                                        # 'width': scaled_size,
+                                        # 'xaxis': {'side': 'top'},
+                                        # 'margin': {
+                                        #     'l': left_margin,
+                                        #     'r': right_margin,
+                                        #     'b': 150,
+                                        #     't': 100
+
+                                    }
+                                }
+
+                            )
+                        ]
+                    )
+                ],
+                style={
+                    'margin-top': '20px',
+                    'margin-left': '5px',
+                    'height': "400px"
+                },
+            )
+            # df1 = df
+            # cols = df1.select_dtypes( [np.int64, np.float64] ).columns
+            # print(cols)
+            # scatter = dbc.Card(
+            #     dbc.CardBody(
+            #
+            #         [
+            #             html.H5( "Pair Plot", style={"text-align": "center"} ),
+            #             dcc.Graph(
+            #                 id='Style_matrix',
+            #
+            #                 figure=
+            #                 px.scatter_matrix( df1,
+            #                                          dimensions=cols,
+            #                                          # color=
+            #
+            #                                    )
+            #             )
+            #         ]
+            #     )
+            # )
+
+            return table, table_corr, htmap
+        else:
+            return None, None, None
+    else:
+        return None, None, None
+
+
+@app.callback(
+    Output('outlier_graph', "children"),
+    [
+        Input('upload-data', 'contents'),
+        Input('upload-data', 'filename'),
+        Input('show_outlier', 'n_clicks'),
+        Input('dynamic-choice_outlier', 'value')
+    ],
+)
+def show_outliers(contents, filename, show_outlier, choice_outlier):
+    if contents is not None:
+        if show_outlier:
+            contents = contents[0]
+            filename = filename[0]
+            df = parse_data(contents, filename)
+            # corr_matrix = df.corr().abs()
+            # high_corr_var = np.where(corr_matrix > 0.9)
+            # high_corr_var = [(corr_matrix.columns[x], corr_matrix.columns[y]) for x, y in zip(*high_corr_var) if
+            #                  x != y and x < y]
+            # out = [item for t in high_corr_var for item in t]
+            # x = np.array(out)
+
+            fig = px.box(df, y=choice_outlier, )
+            # fig.add_trace(marker_color = 'indianred')
+
+            outlierPlot = dbc.Card(
+                [
+                    dbc.CardHeader(
+                        html.H5("Outliers", style={"text-align": "center"})
+                    ),
+                    dbc.CardBody(
+                        [
+                            dcc.Graph(
+                                id="outlier_style",
+                                figure=fig,
+
+                            )
+                        ]
+                    )
+                ],
+                style={
+                    'margin-top': '20px',
+                    # 'margin-left': '5px',
+                    # 'height': "400px"
+                },
             )
 
-            return table
+            return outlierPlot
         else:
             return None
     else:
         return None
-
 
 
 
@@ -644,9 +1487,6 @@ def update_desc(contents, filename, show_stat):
         Output("output-column", "children"),
         Output("output-column-values", "children"),
         Output("output-col", "children"),
-
-
-
     ], # Return Childern value
     [
         Input('upload-data', 'contents'),
@@ -727,12 +1567,18 @@ def update_output(contents, filename):
         ]
         return [html.Li(i, style={"list-style": "none", "font-size": "13px", 'font-weight': '430'}) for i in columnList], None, None, None, None
 
-@app.callback(Output('dynamic-reaplce', 'options'),
-              [
-                  Input( 'upload-data', 'contents' ),
-                  Input( 'upload-data', 'filename' ),
-              ],
-              )
+@app.callback(
+    [
+        Output('dynamic-reaplce', 'options'),
+        Output('dynamic-choice_null', 'options'),
+        Output('dynamic-choice_dup', 'options'),
+        Output('dynamic-choice_outlier', 'options')
+    ],
+    [
+      Input( 'upload-data', 'contents' ),
+      Input( 'upload-data', 'filename' ),
+    ],
+)
 
 def update_multi(contents, filename):
     if contents is not None:
@@ -740,15 +1586,36 @@ def update_multi(contents, filename):
         filename = filename[0]
         df = parse_data(contents, filename)
         mis = df.columns[df.isnull().any()].tolist()
-        # mis = str(mis).replace('[', '').replace(']', '').replace("", '').replace(':', "").replace("'", '')
+
+        df1 = df.columns[df.duplicated().any()].tolist()[0]
+        print("sdfasdf == "+str(df1))
+
+        corr_matrix = df.corr().abs()
+        high_corr_var = np.where(corr_matrix > 0.9)
+        high_corr_var = [(corr_matrix.columns[x], corr_matrix.columns[y]) for x, y in zip(*high_corr_var) if
+                         x != y and x < y]
+        out = [item for t in high_corr_var for item in t]
+        x = np.array(out)
+        df2 = np.unique(x)
+
+        dynamic_replace = []
+        dynamic_choice = []
+        dynamic_outliers = []
 
         if mis is not None or mis != "":
-            return [{'label': i, 'value': i} for i in sorted(list(mis))]
-        else:
-            return []
+            dynamic_replace = [{'label': i, 'value': i} for i in sorted(list(mis))]
+
+        if df1 is not None or df1 != "":
+            dynamic_choice = [{'label': i, 'value': i} for i in sorted(list(df1))]
+
+        if df2 is not None or df2 != "":
+            dynamic_outliers = [{'label': i, 'value': i} for i in sorted(list(df2))]
+        # else:
+        #     return []
+        return dynamic_replace, dynamic_replace, dynamic_choice, dynamic_outliers
     else:
 
-        return []
+        return [], [], [], []
 
 
 @app.callback(Output('dynamic-choice', 'options'),
@@ -763,7 +1630,6 @@ def update_multi(contents, filename):
         filename = filename[0]
         df = parse_data(contents, filename)
         mis = df.columns[df.isnull().any()].tolist()
-        # mis = str(mis).replace('[', '').replace(']', '').replace("", '').replace(':', "").replace("'", '')
 
         if mis is not None or mis != "":
             return [{'label': i, 'value': i} for i in sorted(list(mis))]
@@ -773,30 +1639,231 @@ def update_multi(contents, filename):
 
         return []
 
-@app.callback(dash.dependencies.Output('output-data-upload', 'children'),
+@app.callback(
+    # [
+    #     Output('output-data-upload', 'children'),
+    #     Output('save-button-hidden', 'children')
+    # ],
+Output('output-data-upload', 'children'),
               [
                   Input('upload-data', 'contents'),
                   Input('upload-data', 'filename'),
                   Input("slct_year", "value"),
                   Input("dropall", "n_clicks"),
                   Input("dropdup", "n_clicks"),
-                  Input("dynamic-choice", "value"),
+                  Input("dynamic-choice_null", "value"),
+                  Input("dynamic-choice_dup", "value"),
                   Input("dynamic-reaplce", "value"),
-                  Input("allradio", "value")
-
-                  # Input(component_id='dynamic-choice', component_property='value')
+                  Input("dynamic-choice_outlier", "value"),
+                  Input("allradio", "value"),
+                  Input("fill_missing", "n_clicks"),
+                  Input("download_data", "n_clicks")
               ]
               )
-def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValues,dynamic_choice,radioall):
+def page_1_dropdown(
+        contents,
+        filename,
+        is_selected,
+        dropall,
+        dropdup,
+        dynamic_choice_null,
+        dynamic_choice_dup,
+        dynamic_reaplce,
+        dynamic_choice_outlier,
+        radioall,
+        fill_missing,
+        download_data
+):
     print(radioall)
-    if contents is not None and is_selected == "all":
+    if contents is not None and is_selected == "mean" and fill_missing:
+        print(dynamic_reaplce)
+        contents = contents[0]
+        filename = filename[0]
+        df = parse_data(contents, filename)
+        misingcols = df.columns[df.isnull().any()].tolist()
+
+        for i in dynamic_reaplce:
+            mean = df[i].mean()
+            df[i] = df[i].fillna(mean)
+
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+        #
+        #     # dcc.Graph(id='adding-rows-graph'),
+        #     html.Hr(),
+        #
+        #     # html.Div('Raw Content'),
+        #     # html.Pre(contents[0:200] + '...', style={
+        #     #     'whiteSpace': 'pre-wrap',
+        #     #     'wordBreak': 'break-all'
+        #     # })
+        # ])
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
+
+        return table
+    elif contents is not None and is_selected == "mode" and fill_missing:
+        contents = contents[0]
+        filename = filename[0]
+        df = parse_data(contents, filename)
+        misingcols = df.columns[df.isnull().any()].tolist()
+
+        for i in dynamic_reaplce:
+            mode = df[i].mode()
+            df[i] = df[i].fillna(mode)
+
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
+        #
+        #     # dcc.Graph(id='adding-rows-graph'),
+        #     html.Hr(),
+        #
+        #     # html.Div('Raw Content'),
+        #     # html.Pre(contents[0:200] + '...', style={
+        #     #     'whiteSpace': 'pre-wrap',
+        #     #     'wordBreak': 'break-all'
+        #     # })
+        # ])
+
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
+
+        return table
+    elif contents is not None and is_selected == "median" and fill_missing:
+        contents = contents[0]
+        filename = filename[0]
+        df = parse_data(contents, filename)
+        misingcols = df.columns[df.isnull().any()].tolist()
+
+        for i in dynamic_reaplce:
+            median = df[i].median()
+            df[i] = df[i].fillna(median)
+
+        # table = html.Div([
+        #     html.H5(filename),
+        #     dash_table.DataTable(
+        #         data=df.to_dict('rows'),
+        #         columns=[{'name': i,
+        #                   'id': i,
+        #                   'deletable': True,
+        #                   'renamable': True}
+        #                  for i in df.columns
+        #                  ],
+        #         page_size=20,
+        #         fixed_rows={'headers': True, 'data': 0},
+        #         style_table={
+        #             'height': '300px',
+        #             'overflowY': 'auto',
+        #         },
+        #         style_cell_conditional=[
+        #             {
+        #                 'if': {'column_id': i},
+        #                 'textAlign': 'center'
+        #             } for i in df.columns
+        #         ],
+        #         editable=True,
+        #         row_deletable=True,
+        #         filter_action="native",
+        #         sort_action="native",
+        #         # style_as_list_view=True,
+        #     ),
+        #
+        #     html.Hr(),
+        #
+        # ])
+
+        table = dbc.Table.from_dataframe(df,
+                                         bordered=True,
+                                         hover=True,
+                                         responsive=True,
+                                         striped=True,
+                                         # size="sm",
+                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
+                                         style={
+                                             "padding": "0",
+                                         })
+
+        return table
+    elif contents is not None:
         if dropall:
-            if len(multiValues) != 0:
+            if dynamic_choice_null is not None:
                 contents = contents[0]
                 filename = filename[0]
                 df = parse_data(contents, filename)
 
-                df = df.dropna(axis=0, subset=multiValues)
+                df = df.dropna(axis=0, subset=dynamic_choice_null)
 
                 # table = html.Div([
                 #     html.H5(filename),
@@ -946,7 +2013,6 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
                                              })
 
             return table
-
         else:
             if radioall=='allradiodata':
 
@@ -1013,6 +2079,18 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
                 #     # })
                 # ])
 
+                # if download_data:
+                #     dashTable = dash_table.DataTable(
+                #         id='table',
+                #         columns=[{"name": i, "id": i} for i in df.columns],
+                #         data=df.to_dict('records'),
+                #         export_format='xlsx',
+                #         export_headers='display',
+                #         merge_duplicate_headers=True
+                #     )
+                #     return table, dashTable
+                # else:
+                #     return table, None
                 return table
             elif radioall=='head':
                 contents = contents[0]
@@ -1050,188 +2128,6 @@ def page_1_dropdown(contents, filename, is_selected, dropall, dropdup, multiValu
                                                  })
 
                 return table
-
-    elif contents is not None and is_selected == "mean":
-        print(dynamic_choice)
-        contents = contents[0]
-        filename = filename[0]
-        df = parse_data(contents, filename)
-        misingcols = df.columns[df.isnull().any()].tolist()
-
-        for i in dynamic_choice:
-            mean = df[i].mean()
-            df[i] = df[i].fillna(mean)
-
-        # table = html.Div([
-        #     html.H5(filename),
-        #     dash_table.DataTable(
-        #         data=df.to_dict('rows'),
-        #         columns=[{'name': i,
-        #                   'id': i,
-        #                   'deletable': True,
-        #                   'renamable': True}
-        #                  for i in df.columns
-        #                  ],
-        #         page_size=20,
-        #         fixed_rows={'headers': True, 'data': 0},
-        #         style_table={
-        #             'height': '300px',
-        #             'overflowY': 'auto',
-        #         },
-        #         style_cell_conditional=[
-        #             {
-        #                 'if': {'column_id': i},
-        #                 'textAlign': 'center'
-        #             } for i in df.columns
-        #         ],
-        #         editable=True,
-        #         row_deletable=True,
-        #         filter_action="native",
-        #         sort_action="native",
-        #         # style_as_list_view=True,
-        #     ),
-        #
-        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
-        #
-        #     # dcc.Graph(id='adding-rows-graph'),
-        #     html.Hr(),
-        #
-        #     # html.Div('Raw Content'),
-        #     # html.Pre(contents[0:200] + '...', style={
-        #     #     'whiteSpace': 'pre-wrap',
-        #     #     'wordBreak': 'break-all'
-        #     # })
-        # ])
-        table = dbc.Table.from_dataframe(df,
-                                         bordered=True,
-                                         hover=True,
-                                         responsive=True,
-                                         striped=True,
-                                         # size="sm",
-                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
-                                         style={
-                                             "padding": "0",
-                                         })
-
-        return table
-    elif contents is not None and is_selected == "mode":
-        contents = contents[0]
-        filename = filename[0]
-        df = parse_data(contents, filename)
-        misingcols = df.columns[df.isnull().any()].tolist()
-
-        for i in dynamic_choice:
-            mode = df[i].mode()
-            df[i] = df[i].fillna(mode)
-
-        # table = html.Div([
-        #     html.H5(filename),
-        #     dash_table.DataTable(
-        #         data=df.to_dict('rows'),
-        #         columns=[{'name': i,
-        #                   'id': i,
-        #                   'deletable': True,
-        #                   'renamable': True}
-        #                  for i in df.columns
-        #                  ],
-        #         page_size=20,
-        #         fixed_rows={'headers': True, 'data': 0},
-        #         style_table={
-        #             'height': '300px',
-        #             'overflowY': 'auto',
-        #         },
-        #         style_cell_conditional=[
-        #             {
-        #                 'if': {'column_id': i},
-        #                 'textAlign': 'center'
-        #             } for i in df.columns
-        #         ],
-        #         editable=True,
-        #         row_deletable=True,
-        #         filter_action="native",
-        #         sort_action="native",
-        #         # style_as_list_view=True,
-        #     ),
-        #
-        #     # html.Button('Add Row', id='editing-rows-button', n_clicks=0),
-        #
-        #     # dcc.Graph(id='adding-rows-graph'),
-        #     html.Hr(),
-        #
-        #     # html.Div('Raw Content'),
-        #     # html.Pre(contents[0:200] + '...', style={
-        #     #     'whiteSpace': 'pre-wrap',
-        #     #     'wordBreak': 'break-all'
-        #     # })
-        # ])
-
-        table = dbc.Table.from_dataframe(df,
-                                         bordered=True,
-                                         hover=True,
-                                         responsive=True,
-                                         striped=True,
-                                         # size="sm",
-                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
-                                         style={
-                                             "padding": "0",
-                                         })
-
-        return table
-    elif contents is not None and is_selected == "median":
-        contents = contents[0]
-        filename = filename[0]
-        df = parse_data(contents, filename)
-        misingcols = df.columns[df.isnull().any()].tolist()
-
-        for i in dynamic_choice:
-            median = df[i].median()
-            df[i] = df[i].fillna(median)
-
-        # table = html.Div([
-        #     html.H5(filename),
-        #     dash_table.DataTable(
-        #         data=df.to_dict('rows'),
-        #         columns=[{'name': i,
-        #                   'id': i,
-        #                   'deletable': True,
-        #                   'renamable': True}
-        #                  for i in df.columns
-        #                  ],
-        #         page_size=20,
-        #         fixed_rows={'headers': True, 'data': 0},
-        #         style_table={
-        #             'height': '300px',
-        #             'overflowY': 'auto',
-        #         },
-        #         style_cell_conditional=[
-        #             {
-        #                 'if': {'column_id': i},
-        #                 'textAlign': 'center'
-        #             } for i in df.columns
-        #         ],
-        #         editable=True,
-        #         row_deletable=True,
-        #         filter_action="native",
-        #         sort_action="native",
-        #         # style_as_list_view=True,
-        #     ),
-        #
-        #     html.Hr(),
-        #
-        # ])
-
-        table = dbc.Table.from_dataframe(df,
-                                         bordered=True,
-                                         hover=True,
-                                         responsive=True,
-                                         striped=True,
-                                         # size="sm",
-                                         # className='table-wrapper-scroll-y my-custom-scrollbar',
-                                         style={
-                                             "padding": "0",
-                                         })
-
-        return table
 
 
 
