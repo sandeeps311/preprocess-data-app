@@ -4,3 +4,7 @@ dash-core-components
 pandas
 spacy
 plotly-express
+dash-daq
+dash-html-components
+dash-table
+numpy
