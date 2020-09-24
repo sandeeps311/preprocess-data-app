@@ -1,0 +1,119 @@
+.my-custom-scrollbar {
+position: relative;
+height: 400px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}
+
+.table-wrapper-scroll-y::-webkit-scrollbar {
+  height: 8px;
+  width: 9px;               /* width of the entire scrollbar */
+}
+
+
+.table-wrapper-scroll-y::-webkit-scrollbar-thumb {
+  background-color: #dedcd7;    /* color of the scroll thumb */
+  border-radius: 6px;       /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+
+.data-info-scroll{
+position: relative;
+height: auto;
+width: auto;
+overflow: auto;
+}
+
+.data-wrapper-scroll-y::-webkit-scrollbar {
+  height: 8px;
+  /*width: 9px;*/               /* width of the entire scrollbar */
+}
+
+
+.data-wrapper-scroll-y::-webkit-scrollbar-thumb {
+  background-color: #dedcd7;    /* color of the scroll thumb */
+  border-radius: 8px;       /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+
+body::-webkit-scrollbar {
+  width: 11px;               /* width of the entire scrollbar */
+}
+
+
+body::-webkit-scrollbar-thumb {
+  background-color: #dedcd7;    /* color of the scroll thumb */
+  border-radius: 12px;       /* roundness of the scroll thumb */
+  /* creates padding around scroll thumb */
+}
+
+
+/* The myallradio */
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.myallradio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.myallradio .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+body  {
+  background-image: url("/assets/back3.jpg");
+  background-size: 100%;
+  /*background-color: #d2f7e3;*/
+
+}
+
+
+#myAllData {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#myAllData td, #myAllData th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#myAllData tr:nth-child(even){background-color: #f2f2f2;}
+
+#myAllData tr:hover {background-color: #ddd;}
+
+#myAllData th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+  background-color: #7a7d7c;
+  color: white;
+}
+
+.custom-table-scrollbar {
+position: relative;
+height: 400px;
+overflow: auto;
+}
+
+.dash-table-container .row {
+  margin: 0;
+}

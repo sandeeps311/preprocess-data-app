@@ -1,3 +1,4 @@
+gunicorn
 dash
 dash-bootstrap-components
 dash-core-components
@@ -8,3 +9,5 @@ dash-daq
 dash-html-components
 dash-table
 numpy
+xlrd
+dash-extensions
