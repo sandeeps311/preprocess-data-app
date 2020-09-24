@@ -11,3 +11,4 @@ dash-table
 numpy
 xlrd
 dash-extensions
+pybase64
