@@ -16,10 +16,7 @@ from dash_extensions.snippets import send_data_frame
 
 
 
-app = dash.Dash(
-    # #CSS External#
-    external_stylesheets=[dbc.themes.MATERIA]
-)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.MATERIA])
 
 app.config.suppress_callback_exceptions = True
 
