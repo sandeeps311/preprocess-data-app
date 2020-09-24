@@ -1,4 +1,4 @@
-import base64
+import pybase64
 import io
 import urllib
 import dash
@@ -794,7 +794,7 @@ app.layout = html.Div(
 def parse_data(contents, filename):  #CSV or Excel read and return DF
     content_type, content_string = contents.split(',')
 
-    decoded = base64.b64decode(content_string)
+    decoded = pybase64.b64decode(content_string)
     try:
         if 'csv' in filename:
             # Assume that the user uploaded a CSV or TXT file
