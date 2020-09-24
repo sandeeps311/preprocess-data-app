@@ -1934,4 +1934,4 @@ def page_1_dropdown(
 
 
 if __name__ == '__main__':
-    app.run_server()
+    app.run_server(port="0.0.0.0", host=80)
