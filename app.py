@@ -8,7 +8,6 @@ import dash_html_components as html
 import dash_table
 import dash_bootstrap_components as dbc # Dash componetents
 import pandas as pd
-import spacy
 import dash_daq as daq
 import plotly.express as px
 import numpy as np
@@ -29,7 +28,6 @@ app.title = 'Data pre-processing app'
 
 server = app.server
 
-nlp = spacy.load('en_core_web_sm')
 def most_frequent(List):
     return max(set(List), key = List.count)
 
