@@ -1917,20 +1917,6 @@ def page_1_dropdown(
         return None, None
 
 
-# @app.callback(
-#     Output("download_my_data", "data"),
-#     [Input("download_data_button", "n_clicks")]
-# )
-# def func(n_clicks):
-#     if n_clicks:
-#         # download_data_df = global_df.to_csv(index=False, encoding='utf-8')
-#         # csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(download_data_df)
-#         return send_data_frame(global_df.to_csv, filename="some_name.csv")
-
-
-
-
-
 
 
 if __name__ == '__main__':
