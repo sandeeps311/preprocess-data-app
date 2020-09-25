@@ -1392,7 +1392,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mean )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
 
                 # df['DataFrame column'].round(decimals=number)
                 return dashDataTable( df ), None
@@ -1407,7 +1407,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mode )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             elif dropall and dropdup and (is_selected == "median" and fill_missing):
                 if dynamic_choice_dup:
@@ -1420,7 +1420,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( median )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             ####################
             elif dropall and (is_selected == "mean" and fill_missing):
@@ -1432,7 +1432,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mean )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             elif dropall and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1443,7 +1443,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mode )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             elif dropall and (is_selected == "median" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1454,7 +1454,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( median )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             ###########################
             elif dropdup and (is_selected == "mean" and fill_missing):
@@ -1466,7 +1466,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mean )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             elif dropdup and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_dup:
@@ -1477,7 +1477,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( mode )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
                 # pass
             elif dropdup and (is_selected == "median" and fill_missing):
@@ -1489,7 +1489,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna( median )
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             #########################
             elif dropdup and dropall:
@@ -1500,7 +1500,7 @@ def page_1_dropdown(
                     df = df.drop_duplicates( keep='first', subset=dynamic_choice_dup )
                     # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
 
 
@@ -1511,19 +1511,19 @@ def page_1_dropdown(
                 if dynamic_choice_null is not None:
                     df = df.dropna( axis=0, subset=dynamic_choice_null )
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable( df ), None
                 else:
                     df = df.dropna()
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable( df ), None
             ##############################
             elif dropdup:
                 df = df.drop_duplicates( keep='first', subset=dynamic_choice_dup )
                 # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             ###########################
             elif is_selected == "mean" and fill_missing:
@@ -1533,7 +1533,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif is_selected == "mode" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1542,7 +1542,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                     # df=df[i]
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             elif is_selected == "median" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1551,11 +1551,11 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable( df ), None
             else:
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
         elif radioall == 'head':
             df=df.head(10)
@@ -1570,7 +1570,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and dropdup and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_dup:
@@ -1583,7 +1583,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and dropdup and (is_selected == "median" and fill_missing):
                 if dynamic_choice_dup:
@@ -1596,7 +1596,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ####################
             elif dropall and (is_selected == "mean" and fill_missing):
@@ -1608,7 +1608,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1619,7 +1619,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and (is_selected == "median" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1630,7 +1630,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ###########################
             elif dropdup and (is_selected == "mean" and fill_missing):
@@ -1642,7 +1642,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropdup and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_dup:
@@ -1653,7 +1653,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
                 # pass
             elif dropdup and (is_selected == "median" and fill_missing):
@@ -1665,7 +1665,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             #########################
             elif dropdup and dropall:
@@ -1676,7 +1676,7 @@ def page_1_dropdown(
                     df = df.drop_duplicates(keep='first', subset=dynamic_choice_dup)
                     # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
 
                 # pass
@@ -1686,19 +1686,19 @@ def page_1_dropdown(
                 if dynamic_choice_null is not None:
                     df = df.dropna(axis=0, subset=dynamic_choice_null)
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable(df), None
                 else:
                     df = df.dropna()
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable(df), None
             ##############################
             elif dropdup:
                 df = df.drop_duplicates(keep='first', subset=dynamic_choice_dup)
                 # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ###########################
             elif is_selected == "mean" and fill_missing:
@@ -1708,7 +1708,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif is_selected == "mode" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1717,7 +1717,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                     # df=df[i]
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif is_selected == "median" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1726,11 +1726,11 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             else:
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
         elif radioall == 'tail':
             df = df.tail( 10 )
@@ -1745,7 +1745,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and dropdup and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_dup:
@@ -1758,7 +1758,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and dropdup and (is_selected == "median" and fill_missing):
                 if dynamic_choice_dup:
@@ -1771,7 +1771,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ####################
             elif dropall and (is_selected == "mean" and fill_missing):
@@ -1783,7 +1783,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1794,7 +1794,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropall and (is_selected == "median" and fill_missing):
                 if dynamic_choice_null is not None:
@@ -1805,7 +1805,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ###########################
             elif dropdup and (is_selected == "mean" and fill_missing):
@@ -1817,7 +1817,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mean)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif dropdup and (is_selected == "mode" and fill_missing):
                 if dynamic_choice_dup:
@@ -1828,7 +1828,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(mode)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
                 # pass
             elif dropdup and (is_selected == "median" and fill_missing):
@@ -1840,7 +1840,7 @@ def page_1_dropdown(
                         df[i] = df[i].fillna(median)
                         df[i] = df[i].round(decimals=2)
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             #########################
             elif dropdup and dropall:
@@ -1851,7 +1851,7 @@ def page_1_dropdown(
                     df = df.drop_duplicates(keep='first', subset=dynamic_choice_dup)
                     # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
 
                 # pass
@@ -1861,19 +1861,19 @@ def page_1_dropdown(
                 if dynamic_choice_null is not None:
                     df = df.dropna(axis=0, subset=dynamic_choice_null)
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable(df), None
                 else:
                     df = df.dropna()
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                     return dashDataTable(df), None
             ##############################
             elif dropdup:
                 df = df.drop_duplicates(keep='first', subset=dynamic_choice_dup)
                 # print( df )
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             ###########################
             elif is_selected == "mean" and fill_missing:
@@ -1883,7 +1883,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif is_selected == "mode" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1892,7 +1892,7 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                     # df=df[i]
                     if 'download_data_button' in changed_id:
-                        return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                        return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             elif is_selected == "median" and fill_missing:
                 for i in dynamic_reaplce:
@@ -1901,11 +1901,11 @@ def page_1_dropdown(
                     df[i] = df[i].round(decimals=2)
                 # df=df[i]
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
             else:
                 if 'download_data_button' in changed_id:
-                    return dashDataTable(df), send_data_frame(df.to_csv, filename="some_name.csv")
+                    return dashDataTable(df), send_data_frame(df.to_csv, filename="data.csv")
                 return dashDataTable(df), None
 
     else:
@@ -1920,7 +1920,7 @@ def page_1_dropdown(
 #     if n_clicks:
 #         # download_data_df = global_df.to_csv(index=False, encoding='utf-8')
 #         # csv_string = "data:text/csv;charset=utf-8," + urllib.parse.quote(download_data_df)
-#         return send_data_frame(global_df.to_csv, filename="some_name.csv")
+#         return send_data_frame(global_df.to_csv, filename="data.csv")
 
 
 
